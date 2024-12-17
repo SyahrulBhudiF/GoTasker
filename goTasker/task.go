@@ -1,4 +1,4 @@
-package pkg
+package goTasker
 
 import (
 	"context"

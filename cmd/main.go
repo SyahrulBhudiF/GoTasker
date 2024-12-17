@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/SyahrulBhudiF/GoTasker/pkg"
+	"github.com/SyahrulBhudiF/GoTasker/goTasker"
 	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"
 	"time"
@@ -27,10 +27,10 @@ func main() {
 	}
 
 	// Initialize Redis Connection
-	pkg.Init(redisClient)
+	goTasker.Init(redisClient)
 
 	// Register Task
-	pkg.RegisterTask("send-email", func(ctx context.Context, payload string) error {
+	goTasker.RegisterTask("send-email", func(ctx context.Context, payload string) error {
 		logrus.Infof("Sending email with payload: %s", payload)
 		select {
 		case <-time.After(2 * time.Second): // Simulate email sending
@@ -43,12 +43,12 @@ func main() {
 	})
 
 	// Add Task to Queue
-	if err := pkg.AddTask("task-queue", "send-email"); err != nil {
+	if err := goTasker.AddTask("task-queue", "send-email"); err != nil {
 		logrus.Fatal("Failed to add task:", err)
 	}
 
 	// Start Workers
-	pkg.StartWorker("task-queue", 3, 5*time.Second)
+	goTasker.StartWorker("task-queue", 3, 5*time.Second)
 
 	// Prevent main from exiting
 	select {}
