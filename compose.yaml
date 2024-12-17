@@ -1,0 +1,16 @@
+name: redis
+
+services:
+  redis:
+    image: redis:7.4.1-alpine  # Redis version 7.4.1 with Alpine Linux
+    container_name: redis      # Name for the container
+    restart: always            # Restart the container automatically if it stops
+    ports:
+      - "6379:6379"             # Map Redis port (6379) from container to host
+    command: redis-server --bind 0.0.0.0  # Allow access from all IPs
+    volumes:
+      - redis-data:/data        # Persist Redis data on the host
+
+volumes:
+  redis-data:
+    driver: local              # Using the local volume driver to persist data
