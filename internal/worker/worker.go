@@ -1,9 +1,9 @@
-package worker
+package registry
 
 import (
 	"context"
 	"github.com/SyahrulBhudiF/GoTasker/internal/queue"
-	registry "github.com/SyahrulBhudiF/GoTasker/internal/worker"
+	registry2 "github.com/SyahrulBhudiF/GoTasker/internal/registry"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -21,7 +21,7 @@ func StartWorker(queueName string, redisQueue *queue.RedisQueue, workerCount int
 				}
 
 				logrus.Infof("Worker %d processing task: %s", workerID, task)
-				handler := registry.GetTaskHandler(task)
+				handler := registry2.GetTaskHandler(task)
 				if handler == nil {
 					logrus.Errorf("Worker %d no handler found for task: %s", workerID, task)
 					continue
