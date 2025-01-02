@@ -2,6 +2,7 @@ package queue
 
 import (
 	"context"
+	"errors"
 	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"
 )
@@ -11,8 +12,14 @@ type RedisQueue struct {
 	ctx    context.Context
 }
 
-func NewRedisQueue(client *redis.Client, ctx context.Context) *RedisQueue {
-	return &RedisQueue{client: client, ctx: ctx}
+func NewRedisQueue(client *redis.Client, ctx context.Context) (*RedisQueue, error) {
+	if client == nil {
+		return nil, errors.New("redis client is nil")
+	}
+	if ctx == nil {
+		return nil, errors.New("context is nil")
+	}
+	return &RedisQueue{client: client, ctx: ctx}, nil
 }
 
 func (r *RedisQueue) AddTask(queueName, task string) error {

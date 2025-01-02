@@ -2,10 +2,11 @@ package main
 
 import (
 	"context"
+	"time"
+
 	"github.com/SyahrulBhudiF/GoTasker/goTasker"
 	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 // Example of how to use the package
@@ -29,7 +30,7 @@ func main() {
 	// Initialize Redis Connection
 	goTasker.Init(redisClient)
 
-	// Register Task
+	//Register Task
 	goTasker.RegisterTask("send-email", func(ctx context.Context, payload string) error {
 		logrus.Infof("Sending email with payload: %s", payload)
 		select {
@@ -42,11 +43,12 @@ func main() {
 		}
 	})
 
-	// Add Task to Queue
-	if err := goTasker.AddTask("task-queue", "send-email"); err != nil {
-		logrus.Fatal("Failed to add task:", err)
-	}
+	// Initialize Scheduler
+	goTasker.InitScheduler()
 
+	// Add Task to Queue with Scheduler
+	goTasker.ScheduleTask(60, "task-queue", "send-email")
+	
 	// Start Workers
 	goTasker.StartWorker("task-queue", 3, 5*time.Second)
 
