@@ -3,8 +3,8 @@ package goTasker
 import (
 	"context"
 	"github.com/SyahrulBhudiF/GoTasker/internal/queue"
-	registry2 "github.com/SyahrulBhudiF/GoTasker/internal/registry"
-	registry "github.com/SyahrulBhudiF/GoTasker/internal/worker"
+	"github.com/SyahrulBhudiF/GoTasker/internal/registry"
+	worker "github.com/SyahrulBhudiF/GoTasker/internal/worker"
 	"github.com/redis/go-redis/v9"
 	"time"
 )
@@ -16,7 +16,7 @@ func Init(redisAddr *redis.Client) {
 }
 
 func RegisterTask(name string, handler func(ctx context.Context, payload string) error) {
-	registry2.RegisterTask(name, handler)
+	registry.RegisterTask(name, handler)
 }
 
 func AddTask(queueName, task string) error {
@@ -24,5 +24,5 @@ func AddTask(queueName, task string) error {
 }
 
 func StartWorker(queueName string, workerCount int, timeout time.Duration) {
-	registry.StartWorker(queueName, redisQueue, workerCount, timeout)
+	worker.StartWorker(queueName, redisQueue, workerCount, timeout)
 }
