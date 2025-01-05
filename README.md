@@ -4,9 +4,6 @@ GoTasker is a Go library for background task processing, providing a simple and 
 asynchronously using goroutines, Redis for task queuing, and logging with Logrus. It supports task cancellation and
 timeout features, and provides an easy-to-use function-based API for registering and executing tasks.
 
-> **Note**: This project is still under development and may not be suitable for production use. Please use it at your
-> own risk.
-
 > **Reason**: Im lazy to use the existing library, so I create my own library.
 
 ## Features
